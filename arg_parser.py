@@ -10,5 +10,3 @@ def get_args():
     parser.add_argument("--platform", help="Which platform to run this on", type=Platform, choices=list(Platform))
     args = parser.parse_args()
     return args
-
-print(get_args())
