@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+Credits: https://gist.githubusercontent.com/alexanderjulo/4073388/raw/f9e86c143ba5d5657f949dc1694f08ad01609df3/gistfile1.py
+"""
+
 languages = {
     'aa': ['Afar'],
     'ab': ['Abkhazian'],
