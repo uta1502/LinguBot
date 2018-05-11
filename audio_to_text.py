@@ -10,7 +10,7 @@ from my_types import Mode, Platform
 
 r = sr.Recognizer()
 
-def convert_speech_to_text(speech, lang):
+def convert_speech_to_text(speech, lang='en-US'):
     txt = r.recognize_google(speech, language=lang)
     return txt
 
