@@ -9,6 +9,7 @@ from arg_parser import get_args
 from my_types import Mode, Platform
 
 r = sr.Recognizer()
+
 def convert_speech_to_text(speech, lang):
     txt = r.recognize_google(speech, language=lang)
     return txt
@@ -39,7 +40,6 @@ def main():
         parse_audio_files(files, lang)
     else:
         parse_live_speech(args)
-    # exit(1)
 
 if __name__ == '__main__':
     main()
