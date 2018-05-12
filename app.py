@@ -43,14 +43,14 @@ def receive_message():
                     print(msg)
                     msg_text = msg.get('text')
                     if msg_text:
-                        if msg_text.startswith('&start-translate'):
+                        if msg_text.startswith('#start-translate'):
                             # set a flag in the database
                             # response_sent_text = get_message()
                             options.update_options(sender_id, options.default_opts)
                             response_sent_text = 'Starting translation. All audio attachments\
                                                     will now be converted from speech to text'
                             send_message(sender_id, response_sent_text)
-                        elif msg_text.startswith('&options'):
+                        elif msg_text.startswith('#options'):
                             opts = options.parse_options(msg_text)
                             options.update_options(sender_id, opts)
                             send_message(sender_id, 'Translating FROM: %s, TO: %s' % (opts['src'], opts['dest']))
