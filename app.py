@@ -35,7 +35,9 @@ def receive_message():
                 msg = message.get('message')
                 if msg:
                     #Facebook Messenger ID for user so we know where to send response back to
-                    recipient_id = message['sender']['id']
+                    sender_id = message['sender']['id']
+                    print('The sender id is: ')
+                    print(sender_id)
                     print('The message received is: ')
                     print(msg)
                     if msg.get('text') == '&start-translate':
@@ -43,7 +45,7 @@ def receive_message():
                         # response_sent_text = get_message()
                         response_sent_text = 'Starting translation. All audio attachments\
                                                 will now be converted from speech to text'
-                        send_message(recipient_id, response_sent_text)
+                        send_message(sender_id, response_sent_text)
                     #if user sends us a GIF, photo,video, or any other non-text item
                     attachments = msg.get('attachments')
                     if attachments:
@@ -55,7 +57,7 @@ def receive_message():
                             translator = Translator()
                             converted_response = \
                                 translator.translate(response, dest=DEST_LANG, src=SRC_LANG)
-                            send_message(recipient_id, converted_response.text)
+                            send_message(sender_id, converted_response.text)
     return "Message Processed"
 
 def verify_fb_token(token_sent):
