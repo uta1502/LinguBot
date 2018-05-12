@@ -16,6 +16,7 @@ PORT_NUM = int(sys.argv[1])
 #We will receive messages that Facebook sends our bot at this endpoint 
 @app.route("/", methods=['GET', 'POST'])
 def receive_message():
+    print('Method: ' + str(request.method))
     if request.method == 'GET':
         """Before allowing people to message your bot, Facebook has implemented a verify token
         that confirms all requests that your bot receives came from Facebook.""" 
@@ -72,4 +73,4 @@ def send_message(recipient_id, response):
     return "success"
  
 if __name__ == "__main__":
-    app.run(port=PORT_NUM, use_reloader=True)
+    app.run(port=PORT_NUM)
