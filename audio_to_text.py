@@ -14,7 +14,7 @@ import uuid
 r = sr.Recognizer()
 mp4_file = 'tmp_dwnld-' + str(uuid.uuid4()) + '.mp4'
 wav_file = 'tmp_my_wav-' + str(uuid.uuid4()) + '.wav'
-DEFAULT_LANG = 'hin'
+DEFAULT_LANG = 'en-US'
 
 
 def convert_speech_to_text(speech, lang=DEFAULT_LANG):

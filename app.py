@@ -6,12 +6,15 @@ from flask import Flask, request
 from pymessenger.bot import Bot
 import sys
 import audio_to_text as a2t
+from googletrans import Translator
 
 app = Flask(__name__)
 ACCESS_TOKEN = 'EAAU3ZCNLnRqIBAOEEZA1JZB550HYVAlhkGlBdxjajgwPFvZA8t4ZAqjKUxQ1Uxu5rqx3Ca57xQRLEilBNPeegWVB7VONE5nZBtDAkYlM2lBUpXmi2C6xO4UMBrDklccA5QqaukvvOIv54DWlEJUEvksPkapBefEJRMIwde5hQpoQZDZD'
 VERIFY_TOKEN = 'chatTranslator'
 bot = Bot(ACCESS_TOKEN)
 PORT_NUM = int(sys.argv[1])
+SRC_LANG = 'en'
+DEST_LANG = 'el' # 'fr'
 
 #We will receive messages that Facebook sends our bot at this endpoint 
 @app.route("/", methods=['GET', 'POST'])
@@ -49,9 +52,9 @@ def receive_message():
                         if attch_type == 'audio':
                             url = attch['payload']['url']
                             response = a2t.convert_audio_from_url(url)
-                            send_message(recipient_id, response)
                             translator = Translator()
-                            converted_response = translator.translate(response)
+                            converted_response = \
+                                translator.translate(response, dest=DEST_LANG, src=SRC_LANG)
                             send_message(recipient_id, converted_response.text)
     return "Message Processed"
 
@@ -76,4 +79,4 @@ def send_message(recipient_id, response):
     return "success"
  
 if __name__ == "__main__":
-    app.run(port=PORT_NUM)
+    app.run(port=PORT_NUM, use_reloader=True)
