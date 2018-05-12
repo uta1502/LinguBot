@@ -7,14 +7,15 @@ from pymessenger.bot import Bot
 import sys
 import audio_to_text as a2t
 from googletrans import Translator
+import gtts
 
 app = Flask(__name__)
 ACCESS_TOKEN = 'EAAU3ZCNLnRqIBAOEEZA1JZB550HYVAlhkGlBdxjajgwPFvZA8t4ZAqjKUxQ1Uxu5rqx3Ca57xQRLEilBNPeegWVB7VONE5nZBtDAkYlM2lBUpXmi2C6xO4UMBrDklccA5QqaukvvOIv54DWlEJUEvksPkapBefEJRMIwde5hQpoQZDZD'
 VERIFY_TOKEN = 'chatTranslator'
 bot = Bot(ACCESS_TOKEN)
 PORT_NUM = int(sys.argv[1])
-SRC_LANG = 'en'
-DEST_LANG = 'el' # 'fr'
+SRC_LANG = 'hi'
+DEST_LANG = 'en-US' # 'fr'
 
 #We will receive messages that Facebook sends our bot at this endpoint 
 @app.route("/", methods=['GET', 'POST'])
@@ -55,8 +56,11 @@ def receive_message():
                             translator = Translator()
                             converted_response = \
                                 translator.translate(response, dest=DEST_LANG, src=SRC_LANG)
-                            send_message(recipient_id, converted_response.text)
+
+                            send_audio_message(recipient_id,converted_response.text)
+                            #send_message(recipient_id, converted_response.text)
     return "Message Processed"
+
 
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
@@ -65,13 +69,17 @@ def verify_fb_token(token_sent):
         return request.args.get("hub.challenge")
     return 'Invalid verification token'
  
- 
 #chooses a random message to send to the user
 def get_message():
     sample_responses = ["You are stunning!", "We're proud of you.", "Keep on being you!", "We're greatful to know you :)"]
     # return selected item to the user
     return random.choice(sample_responses)
  
+def send_audio_message(recipient_id,response):
+    tts = gtts.gTTS(text=response, lang='en')
+    tts.save("rec.mp3")
+    bot.send_image_url(recipient_id, "/Users/utkarshatri/facebookHackathon/rec.mp3")
+    return "success"
 #uses PyMessenger to send response to user
 def send_message(recipient_id, response):
     #sends user the text message provided via input response parameter
