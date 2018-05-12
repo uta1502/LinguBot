@@ -9,6 +9,7 @@ from arg_parser import get_args
 from my_types import Mode, Platform
 import subprocess
 import urllib.request
+
 r = sr.Recognizer()
 mp4_file = 'tmp_dwnld.mp4'
 wav_file = 'tmp_my_wav.wav'
@@ -25,13 +26,13 @@ def record_speech(str_data):
 def convert_audio_from_url(url):
     download_from_url(url)
     mp4_to_wav(mp4_file)
-    parse_audio_files([wav_file])
+    [txt] = parse_audio_files([wav_file])
     try:
         remove(mp4_file)
         remove(wav_file)
     except:
         pass
-
+    return txt
 
 def download_from_url(url):
     urllib.request.urlretrieve(url, mp4_file)
@@ -44,17 +45,19 @@ def mp4_to_wav(file_name):
     subprocess.call(command, shell=True)
 
 def parse_audio_files(files, lang='en-US'):
+    return_value = []
     for file_name in files:
         with sr.AudioFile(file_name) as source:
             audio = r.record(source)
         try:
             txt = convert_speech_to_text(audio, lang)
             # print('Here is what google thinks you said:')
-            print(txt)
+            return_value.append(txt)
         except sr.UnknownValueError:
             print("Sphinx could not understand audio")
         except sr.RequestError as e:
             print("Sphinx error; {0}".format(e))
+    return return_value
 
 def parse_live_speech(args):
     print('Not implemented yet')
