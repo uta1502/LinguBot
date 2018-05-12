@@ -9,10 +9,11 @@ from arg_parser import get_args
 from my_types import Mode, Platform
 import subprocess
 import urllib.request
+import uuid
 
 r = sr.Recognizer()
-mp4_file = 'tmp_dwnld.mp4'
-wav_file = 'tmp_my_wav.wav'
+mp4_file = 'tmp_dwnld-' + str(uuid.uuid4()) + '.mp4'
+wav_file = 'tmp_my_wav-' + str(uuid.uuid4()) + '.wav'
 DEFAULT_LANG = 'en-US'
 
 
