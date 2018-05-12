@@ -16,8 +16,11 @@ def parse_options(options_str):
     tokens = options_str.split()[1:]
     options_dict = {}
     for token in tokens:
-        [key, val] = token.split(':')
-        options_dict[key] = val
+        try:
+            [key, val] = token.split(':')
+            options_dict[key] = val
+        except:
+            pass
     return set_defaults(options_dict)
 
 def update_options(sender_id, options):
