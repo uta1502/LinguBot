@@ -50,6 +50,9 @@ def receive_message():
                             url = attch['payload']['url']
                             response = a2t.convert_audio_from_url(url)
                             send_message(recipient_id, response)
+                            translator = Translator()
+                            converted_response = translator.translate(response)
+                            send_message(recipient_id, converted_response.text)
     return "Message Processed"
 
 def verify_fb_token(token_sent):
