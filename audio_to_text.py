@@ -14,10 +14,11 @@ import uuid
 r = sr.Recognizer()
 mp4_file = 'tmp_dwnld-' + str(uuid.uuid4()) + '.mp4'
 wav_file = 'tmp_my_wav-' + str(uuid.uuid4()) + '.wav'
-DEFAULT_LANG = 'en-US'
 
+DEFAULT_SRC = 'en'
+DEFAULT_DEST = 'es'
 
-def convert_speech_to_text(speech, lang=DEFAULT_LANG):
+def convert_speech_to_text(speech, lang=DEFAULT_SRC):
     txt = r.recognize_google(speech, language=lang)
     return txt
 
@@ -26,11 +27,11 @@ def record_speech(str_data):
         rec = r.record(source)
     return rec
 
-def convert_audio_from_url(url):
+def convert_audio_from_url(url, lang=DEFAULT_SRC):
     download_from_url(url)
     mp4_to_wav(mp4_file)
     try:
-        [txt] = parse_audio_files([wav_file])
+        [txt] = parse_audio_files([wav_file], lang)
     except Exception as e:
         print('Encountered exception: ' + str(e))
         txt = "Sorry, I could not translate that"
@@ -51,7 +52,7 @@ def mp4_to_wav(file_name):
     print(command)
     subprocess.call(command, shell=True)
 
-def parse_audio_files(files, lang=DEFAULT_LANG):
+def parse_audio_files(files, lang=DEFAULT_SRC):
     return_value = []
     for file_name in files:
         with sr.AudioFile(file_name) as source:

@@ -1,0 +1,7 @@
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,
+  src TEXT NOT NULL DEFAULT 'auto',
+  dest TEXT NOT NULL DEFAULT 'en',
+  get_audio BOOLEAN DEFAULT 0,
+  comprende BOOLEAN DEFAULT 0
+);
