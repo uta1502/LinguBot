@@ -9,12 +9,15 @@ from arg_parser import get_args
 from my_types import Mode, Platform
 import subprocess
 import urllib.request
+import uuid
 
 r = sr.Recognizer()
-mp4_file = 'tmp_dwnld.mp4'
-wav_file = 'tmp_my_wav.wav'
+mp4_file = 'tmp_dwnld-' + str(uuid.uuid4()) + '.mp4'
+wav_file = 'tmp_my_wav-' + str(uuid.uuid4()) + '.wav'
+DEFAULT_LANG = 'en-US'
 
-def convert_speech_to_text(speech, lang='en-US'):
+
+def convert_speech_to_text(speech, lang=DEFAULT_LANG):
     txt = r.recognize_google(speech, language=lang)
     return txt
 
@@ -26,12 +29,16 @@ def record_speech(str_data):
 def convert_audio_from_url(url):
     download_from_url(url)
     mp4_to_wav(mp4_file)
-    [txt] = parse_audio_files([wav_file])
+    try:
+        [txt] = parse_audio_files([wav_file])
+    except Exception as e:
+        print('Encountered exception: ' + str(e))
+        txt = "Sorry, I could not translate that"
     try:
         remove(mp4_file)
         remove(wav_file)
-    except:
-        pass
+    except Exception as e:
+        print(e)
     return txt
 
 def download_from_url(url):
@@ -44,7 +51,7 @@ def mp4_to_wav(file_name):
     print(command)
     subprocess.call(command, shell=True)
 
-def parse_audio_files(files, lang='en-US'):
+def parse_audio_files(files, lang=DEFAULT_LANG):
     return_value = []
     for file_name in files:
         with sr.AudioFile(file_name) as source:
