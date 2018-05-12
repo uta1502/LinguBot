@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sqlite3
-from db import conn
+from db import conn, c
 from audio_to_text import DEFAULT_DEST, DEFAULT_SRC
 
 def set_defaults(options_dict):
@@ -29,12 +29,17 @@ def update_options(sender_id, options):
     q = 'UPDATE users SET src=?, dest=? where id = ?'
     conn.execute(q, (options['src'], options['dest'], str(sender_id)))
     print('Updated users options. Src: %s, Dest: %s' % (options['src'], options['dest']))
-    conn.commit()
+    c.commit()
 def get_options(sender_id):
-    q = 'SELECT src, dest from users where id=?'
-    res = conn.execute(q, (str(sender_id)))
-    print(res)
-    return default_opts
+    print('AAAAAAAAAAAAAAAAAAA')
+    q = 'SELECT src, dest from users where id=%s' % (str(sender_id))
+    print(q)
+    conn.execute(q)
+    (src, dest) = conn.fetchone()
+    return {
+        'src': src,
+        'dest': dest
+    }
     # return (src, dest)
 
 
