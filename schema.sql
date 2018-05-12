@@ -1,0 +1,5 @@
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,
+  src TEXT NOT NULL DEFAULT 'auto',
+  dest TEXT NOT NULL DEFAULT 'en'
+);
