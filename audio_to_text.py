@@ -39,7 +39,7 @@ def download_from_url(url):
     print('Successfully saved file to : ' + mp4_file)
 
 def mp4_to_wav(file_name):
-    command = "ffmpeg -i %s -ab 160k -ac 2 -ar 44100 -vn %s" % (mp4_file, wav_file)
+    command = "ffmpeg -y -i %s -ab 160k -ac 2 -ar 44100 -vn %s" % (mp4_file, wav_file)
     print('Running the command: ')
     print(command)
     subprocess.call(command, shell=True)
